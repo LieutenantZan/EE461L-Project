@@ -2,10 +2,10 @@ package com.mycompany.plarty;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
@@ -17,12 +17,15 @@ import com.spotify.sdk.android.player.Player;
 import com.spotify.sdk.android.player.PlayerNotificationCallback;
 import com.spotify.sdk.android.player.PlayerState;
 
+import org.w3c.dom.Text;
+
 public class MainActivity extends Activity implements
         PlayerNotificationCallback, ConnectionStateCallback {
 
     private static final String CLIENT_ID = "9409b36d6d4143188ac37ffc294ed91a";
     private static final String REDIRECT_URI = "plarty-login://callback";
-    private static final int REQUEST_CODE = 1337;
+    private static final int SPOTIFY_LOGIN_REQUEST_CODE = 1337;
+    private static final int HOST_ROOM_REQUEST_CODE = 200;
 
     private Player mPlayer;
     @Override
@@ -36,7 +39,7 @@ public class MainActivity extends Activity implements
         builder.setScopes(new String[]{"user-read-private", "streaming"});
         AuthenticationRequest request = builder.build();
 
-        AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
+        AuthenticationClient.openLoginActivity(this, SPOTIFY_LOGIN_REQUEST_CODE, request);
     }
 
     @Override
@@ -44,7 +47,7 @@ public class MainActivity extends Activity implements
         super.onActivityResult(requestCode, resultCode, intent);
 
         // Check if result comes from the correct activity
-        if (requestCode == REQUEST_CODE) {
+        if (requestCode == SPOTIFY_LOGIN_REQUEST_CODE) {
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
             if (response.getType() == AuthenticationResponse.Type.TOKEN) {
                 Spotify.getPlayer(new Config(this, response.getAccessToken(), CLIENT_ID), this, new Player.InitializationObserver() {
@@ -61,6 +64,17 @@ public class MainActivity extends Activity implements
                         Log.e("MainActivity", "Could not initialize player: " + throwable.getMessage());
                     }
                 });
+            }
+        }
+
+        else if (requestCode == HOST_ROOM_REQUEST_CODE){
+            if (resultCode == RESULT_OK){
+                TextView roomNameMessage = (TextView) findViewById(R.id.roomNameDisplay);
+                String roomName = intent.getStringExtra("RoomName");
+                TextView roomCodeMessage = (TextView) findViewById(R.id.roomCodeDisplay);
+                String roomCode = intent.getStringExtra("RoomCode");
+                roomNameMessage.append(roomName);
+                roomCodeMessage.append(roomCode);
             }
         }
     }
@@ -103,5 +117,12 @@ public class MainActivity extends Activity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    public void onCreateRoom(View view) {
+        Intent createRoomIntent = new Intent(this, CreateRoom.class);
+        final int result = 100;
+        startActivityForResult(createRoomIntent, HOST_ROOM_REQUEST_CODE);
+
     }
 }

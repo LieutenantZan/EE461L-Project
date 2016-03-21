@@ -23,5 +23,10 @@
             android:name="com.spotify.sdk.android.authentication.LoginActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 
+        <activity
+            android:name=".CreateRoom"
+            android:label="Create Room"
+            android:theme="@style/AppTheme"/>
+
     </application>
 </manifest>
