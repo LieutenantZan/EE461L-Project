@@ -73,8 +73,8 @@ public class MainActivity extends Activity implements
                 String roomName = intent.getStringExtra("RoomName");
                 TextView roomCodeMessage = (TextView) findViewById(R.id.roomCodeDisplay);
                 String roomCode = intent.getStringExtra("RoomCode");
-                roomNameMessage.append(roomName);
-                roomCodeMessage.append(roomCode);
+                roomNameMessage.setText(roomName);
+                roomCodeMessage.setText(roomCode);
             }
         }
     }
@@ -116,6 +116,7 @@ public class MainActivity extends Activity implements
 
     @Override
     protected void onDestroy() {
+        Spotify.destroyPlayer(this);
         super.onDestroy();
     }
 

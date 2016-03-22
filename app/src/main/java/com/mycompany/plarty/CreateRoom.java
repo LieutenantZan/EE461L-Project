@@ -11,7 +11,7 @@ import java.util.Random;
 public class CreateRoom extends Activity {
 
     private static final String CHAR_LIST = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-    private static final int RANDOM_STRING_LENGTH = 10;
+    private static final int RANDOM_STRING_LENGTH = 6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
