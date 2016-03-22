@@ -69,6 +69,7 @@ public class MainActivity extends Activity implements
 
         else if (requestCode == HOST_ROOM_REQUEST_CODE){
             if (resultCode == RESULT_OK){
+                setContentView(R.layout.room_view);
                 TextView roomNameMessage = (TextView) findViewById(R.id.roomNameDisplay);
                 String roomName = intent.getStringExtra("RoomName");
                 TextView roomCodeMessage = (TextView) findViewById(R.id.roomCodeDisplay);
@@ -125,5 +126,10 @@ public class MainActivity extends Activity implements
         final int result = 100;
         startActivityForResult(createRoomIntent, HOST_ROOM_REQUEST_CODE);
 
+    }
+
+    public void onLeaveRoom(View view) {
+        setContentView(com.mycompany.plarty.R.layout.activity_main);
+        //TODO - Close room and all that jazz goes here too
     }
 }
