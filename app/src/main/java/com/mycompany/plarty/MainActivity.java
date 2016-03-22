@@ -122,6 +122,10 @@ public class MainActivity extends Activity implements
     }
 
     public void onCreateRoom(View view) {
+        //TODO - Start broadcasting to devices
+            //Check out http://developer.android.com/training/connect-devices-wirelessly/index.html
+            //Maybe move it up to after the intent is returned and the room is actuially created so the name can be the party name
+            //Maybe make it name:code
         Intent createRoomIntent = new Intent(this, CreateRoom.class);
         final int result = 100;
         startActivityForResult(createRoomIntent, HOST_ROOM_REQUEST_CODE);
@@ -131,5 +135,10 @@ public class MainActivity extends Activity implements
     public void onLeaveRoom(View view) {
         setContentView(com.mycompany.plarty.R.layout.activity_main);
         //TODO - Close room and all that jazz goes here too
+    }
+
+    public void onJoinRoom(View view) {
+        //TODO - Search for devices and join
+
     }
 }
