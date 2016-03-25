@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.spotify.sdk.android.authentication.AuthenticationClient;
@@ -24,10 +26,13 @@ public class MainActivity extends Activity implements
 
     private static final String CLIENT_ID = "9409b36d6d4143188ac37ffc294ed91a";
     private static final String REDIRECT_URI = "plarty-login://callback";
+    public static final String API_URL = "https://api.spotify.com/v1/search?q=";
     private static final int SPOTIFY_LOGIN_REQUEST_CODE = 1337;
     private static final int HOST_ROOM_REQUEST_CODE = 200;
+    public static String spotifyTrackID; //Keeps track of the saved song
+    public static String txt;
+    public static Player mPlayer;
 
-    private Player mPlayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +45,17 @@ public class MainActivity extends Activity implements
         AuthenticationRequest request = builder.build();
 
         AuthenticationClient.openLoginActivity(this, SPOTIFY_LOGIN_REQUEST_CODE, request);
+
+        Button selectSongButton = (Button) findViewById(R.id.play_button);
+        selectSongButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                EditText et = (EditText) findViewById(com.mycompany.plarty.R.id.editText);
+                txt = et.getText().toString();
+                txt = txt.replaceAll(" ", "%20");
+                String url_select = API_URL + txt + "&type=track";
+                new JSONTask().execute(url_select);
+            }
+        });
     }
 
     @Override
@@ -56,7 +72,6 @@ public class MainActivity extends Activity implements
                         mPlayer = player;
                         mPlayer.addConnectionStateCallback(MainActivity.this);
                         mPlayer.addPlayerNotificationCallback(MainActivity.this);
-                        mPlayer.play("spotify:track:0eGsygTp906u18L0Oimnem");
                     }
 
                     @Override

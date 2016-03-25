@@ -21,6 +21,7 @@ public class CreateRoom extends Activity {
 
         TextView roomCode = (TextView) findViewById(R.id.roomCode);
         roomCode.append(generateRoomCode());
+        // TODO - add room password so the code is unique and shit
         //roomCode.append("q1w2e3r4t5");
     }
 

@@ -38,4 +38,7 @@ dependencies {
 
     // All other dependencies for your app should also be here:
     compile 'com.android.support:appcompat-v7:23.1.1'
+
+    // This library handles GSON
+    compile 'com.google.code.gson:gson:2.3.1'
 }
