@@ -3,8 +3,8 @@ package com.mycompany.plarty;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
-import com.mycompany.plarty.Track.Item;
-import com.mycompany.plarty.Track.Track;
+import com.mycompany.plarty.TrackModel;
+import com.mycompany.plarty.TrackModel.Item;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,10 +23,10 @@ import java.util.List;
 /**
  * Created by Antonio on 3/23/2016.
  */
-public class JSONTask extends AsyncTask<String, String, Track> {
+public class JSONTask extends AsyncTask<String, String, TrackModel> {
     private String command;
     @Override
-    protected Track doInBackground(String... params) {
+    protected TrackModel doInBackground(String... params) {
         HttpURLConnection connection = null;
         BufferedReader reader = null;
 
@@ -47,7 +47,9 @@ public class JSONTask extends AsyncTask<String, String, Track> {
             }
 
             String finalJson = buffer.toString();
-            Track track = new Track();
+
+            Gson gson = new Gson();
+            TrackModel track = new TrackModel();
             JSONObject parentObject = new JSONObject(finalJson);
             JSONObject trackObject = parentObject.getJSONObject("tracks");
             track.setHref(trackObject.getString("href"));
@@ -56,13 +58,11 @@ public class JSONTask extends AsyncTask<String, String, Track> {
             track.setOffset(trackObject.getInt("offset"));
             track.setPrevious(trackObject.getString("previous"));
             track.setTotal(trackObject.getInt("total"));
-            Gson gson = new Gson();
-            List<Item> itemList = new ArrayList<>();
             JSONArray itemsArray = trackObject.getJSONArray("items");
+            List<Item> itemList = new ArrayList<Item>();
             for(int i = 0; i < itemsArray.length(); i++){
                 JSONObject tempItemObject = itemsArray.getJSONObject(i);
-                Item item = gson.fromJson(tempItemObject.toString(),Item.class);
-                itemList.add(i,item);
+                itemList.add(gson.fromJson(tempItemObject.toString(), Item.class));
             }
             track.setItemList(itemList);
             return track;
@@ -87,8 +87,9 @@ public class JSONTask extends AsyncTask<String, String, Track> {
         return null;
     }
 
-    protected void onPostExecute(Track result) {
+    protected void onPostExecute(TrackModel result) {
         super.onPostExecute(result);
-        MainActivity.mPlayer.play(result.getItemList(0).getUri());
+        System.out.println(result.getItemList().get(0).getUri() + "\n" + result.getItemList().get(0).getName() + "\n" + result.getItemList().get(0).getAlbum().getName());
+        MainActivity.mPlayer.play(result.getItemList().get(0).getUri());
     }
 }

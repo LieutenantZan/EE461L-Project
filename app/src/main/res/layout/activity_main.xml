@@ -16,29 +16,23 @@
         android:layout_height="wrap_content"
         android:textSize="36sp"
         android:layout_marginTop="40px"
-        android:text="Welcome to Plarty" />
+        android:text="Plarty" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="500px"
+        android:layout_marginTop="100px"
         android:text="Host Room"
         android:onClick="onCreateRoom"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Join Room"
-        android:onClick="onJoinRoom"/>
-
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="200px"
         android:gravity="center_horizontal"
         android:id="@+id/editText"
         android:width="100dp"
-        android:layout_gravity="center_vertical"
+        android:layout_gravity="center_horizontal"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
@@ -48,8 +42,15 @@
         android:text="Play"
         android:id="@+id/play_button"
         android:onClick="PlaySong"
-        android:layout_gravity="center_vertical"
+        android:layout_gravity="center_horizontal"
         android:layout_below="@+id/editText"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200px"
+        android:text="Join Room"
+        android:onClick="onJoinRoom"/>
 
 </LinearLayout>
