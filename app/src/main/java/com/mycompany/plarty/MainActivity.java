@@ -37,25 +37,6 @@ public class MainActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.mycompany.plarty.R.layout.activity_main);
-
-        AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
-                AuthenticationResponse.Type.TOKEN,
-                REDIRECT_URI);
-        builder.setScopes(new String[]{"user-read-private", "streaming"});
-        AuthenticationRequest request = builder.build();
-
-        AuthenticationClient.openLoginActivity(this, SPOTIFY_LOGIN_REQUEST_CODE, request);
-
-        Button selectSongButton = (Button) findViewById(R.id.play_button);
-        selectSongButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                EditText et = (EditText) findViewById(com.mycompany.plarty.R.id.editText);
-                txt = et.getText().toString();
-                txt = txt.replaceAll(" ", "%20");
-                String url_select = API_URL + txt + "&type=track";
-                new JSONTask().execute(url_select);
-            }
-        });
     }
 
     @Override
@@ -82,7 +63,7 @@ public class MainActivity extends Activity implements
             }
         }
 
-        else if (requestCode == HOST_ROOM_REQUEST_CODE){
+        if (requestCode == HOST_ROOM_REQUEST_CODE){
             if (resultCode == RESULT_OK){
                 setContentView(R.layout.room_view);
                 TextView roomNameMessage = (TextView) findViewById(R.id.roomNameDisplay);
@@ -141,15 +122,30 @@ public class MainActivity extends Activity implements
             //Check out http://developer.android.com/training/connect-devices-wirelessly/index.html
             //Maybe move it up to after the intent is returned and the room is actuially created so the name can be the party name
             //Maybe make it name:code
+        AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
+                AuthenticationResponse.Type.TOKEN,
+                REDIRECT_URI);
+        builder.setScopes(new String[]{"user-read-private", "streaming"});
+        AuthenticationRequest request = builder.build();
+
+        AuthenticationClient.openLoginActivity(this, SPOTIFY_LOGIN_REQUEST_CODE, request);
+
         Intent createRoomIntent = new Intent(this, CreateRoom.class);
         final int result = 100;
         startActivityForResult(createRoomIntent, HOST_ROOM_REQUEST_CODE);
-
     }
 
     public void onLeaveRoom(View view) {
         setContentView(com.mycompany.plarty.R.layout.activity_main);
         //TODO - Close room and all that jazz goes here too
+    }
+
+    public void onPlaySong(View view){
+        EditText et = (EditText) findViewById(com.mycompany.plarty.R.id.editText);
+        txt = et.getText().toString();
+        txt = txt.replaceAll(" ", "%20");
+        String url_select = API_URL + txt + "&type=track";
+        new JSONTask().execute(url_select);
     }
 
     public void onJoinRoom(View view) {
