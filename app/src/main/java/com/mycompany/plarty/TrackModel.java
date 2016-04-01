@@ -115,7 +115,7 @@ public class TrackModel {
         public class Album {
             private String href;
             private String id;
-            private List<Image> imageList = new ArrayList<>();
+            private List<Image> images = new ArrayList<>();
             private String name;
             private String type;
             private String uri;
@@ -124,8 +124,8 @@ public class TrackModel {
             public void setHref(String href) { this.href = href; }
             public String getId() { return id; }
             public void setId(String id) { this.id = id; }
-            public List<Image> getImageList() { return imageList; }
-            public void setImageList(List<Image> imageList) { this.imageList = imageList; }
+            public List<Image> getImageList() { return images; }
+            public void setImageList(List<Image> imageList) { this.images = imageList; }
             public String getName() { return name; }
             public void setName(String name) { this.name = name; }
             public String getType() { return type; }

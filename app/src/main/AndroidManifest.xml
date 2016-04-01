@@ -28,5 +28,10 @@
             android:label="Create Room"
             android:theme="@style/AppTheme"/>
 
+        <activity
+            android:name=".Search"
+            android:label="Search"
+            android:theme="@style/AppTheme"/>
+
     </application>
 </manifest>

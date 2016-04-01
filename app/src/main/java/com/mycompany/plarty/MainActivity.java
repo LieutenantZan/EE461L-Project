@@ -152,4 +152,9 @@ public class MainActivity extends Activity implements
         //TODO - Search for devices and join
 
     }
+
+    public void onSearch(View view) {
+        Intent searchIntent = new Intent(this, Search.class);
+        startActivity(searchIntent);
+    }
 }

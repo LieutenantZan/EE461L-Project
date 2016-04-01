@@ -89,7 +89,8 @@ public class JSONTask extends AsyncTask<String, String, TrackModel> {
 
     protected void onPostExecute(TrackModel result) {
         super.onPostExecute(result);
-        System.out.println(result.getItemList().get(0).getUri() + "\n" + result.getItemList().get(0).getName() + "\n" + result.getItemList().get(0).getAlbum().getName());
-        MainActivity.mPlayer.play(result.getItemList().get(0).getUri());
+//        Search.resultList = result;
+//        System.out.println(result.getItemList().get(0).getUri() + "\n" + result.getItemList().get(0).getName() + "\n" + result.getItemList().get(0).getAlbum().getName());
+//        MainActivity.mPlayer.play(result.getItemList().get(0).getUri());
     }
 }
