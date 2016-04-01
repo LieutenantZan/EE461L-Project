@@ -3,10 +3,14 @@ package com.mycompany.plarty;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.spotify.sdk.android.authentication.AuthenticationClient;
@@ -21,17 +25,20 @@ import com.spotify.sdk.android.player.PlayerState;
 
 import org.w3c.dom.Text;
 
-public class MainActivity extends Activity implements
-        PlayerNotificationCallback, ConnectionStateCallback {
+public class MainActivity extends Activity {
 
+    //Required by Spotify
     private static final String CLIENT_ID = "9409b36d6d4143188ac37ffc294ed91a";
     private static final String REDIRECT_URI = "plarty-login://callback";
-    public static final String API_URL = "https://api.spotify.com/v1/search?q=";
+
+    //Variables checking whose requesting activity result
     private static final int SPOTIFY_LOGIN_REQUEST_CODE = 1337;
     private static final int HOST_ROOM_REQUEST_CODE = 200;
-    public static String spotifyTrackID; //Keeps track of the saved song
+
+    //Used for creating url to pass for searching and JSON parsing
+    public static final String API_URL = "https://api.spotify.com/v1/search?q=";
     public static String txt;
-    public static Player mPlayer;
+    public static RPlayer mPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,14 +57,13 @@ public class MainActivity extends Activity implements
                 Spotify.getPlayer(new Config(this, response.getAccessToken(), CLIENT_ID), this, new Player.InitializationObserver() {
                     @Override
                     public void onInitialized(Player player) {
-                        mPlayer = player;
-                        mPlayer.addConnectionStateCallback(MainActivity.this);
-                        mPlayer.addPlayerNotificationCallback(MainActivity.this);
+                        mPlayer = new RPlayer(player);
+                        System.out.println("Player Set Up");
                     }
 
                     @Override
                     public void onError(Throwable throwable) {
-                        Log.e("MainActivity", "Could not initialize player: " + throwable.getMessage());
+                        Log.e("RPlayer", "Could not initialize player: " + throwable.getMessage());
                     }
                 });
             }
@@ -74,47 +80,6 @@ public class MainActivity extends Activity implements
                 roomCodeMessage.setText(roomCode);
             }
         }
-    }
-
-    @Override
-    public void onLoggedIn() {
-        Log.d("MainActivity", "User logged in");
-    }
-
-    @Override
-    public void onLoggedOut() {
-        Log.d("MainActivity", "User logged out");
-    }
-
-    @Override
-    public void onLoginFailed(Throwable error) {
-        Log.d("MainActivity", "Login failed");
-    }
-
-    @Override
-    public void onTemporaryError() {
-        Log.d("MainActivity", "Temporary error occurred");
-    }
-
-    @Override
-    public void onConnectionMessage(String message) {
-        Log.d("MainActivity", "Received connection message: " + message);
-    }
-
-    @Override
-    public void onPlaybackEvent(EventType eventType, PlayerState playerState) {
-        Log.d("MainActivity", "Playback event received: " + eventType.name());
-    }
-
-    @Override
-    public void onPlaybackError(ErrorType errorType, String errorDetails) {
-        Log.d("MainActivity", "Playback error received: " + errorType.name());
-    }
-
-    @Override
-    protected void onDestroy() {
-        Spotify.destroyPlayer(this);
-        super.onDestroy();
     }
 
     public void onCreateRoom(View view) {
@@ -148,8 +113,15 @@ public class MainActivity extends Activity implements
         new JSONTask().execute(url_select);
     }
 
+    public void onNextSong(View view){
+        mPlayer.playNext();
+    }
+
+    public void onPrevSong(View view){
+        mPlayer.playPrev();
+    }
+
     public void onJoinRoom(View view) {
         //TODO - Search for devices and join
-
     }
 }

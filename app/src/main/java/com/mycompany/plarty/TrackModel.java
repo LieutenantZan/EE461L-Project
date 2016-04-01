@@ -1,5 +1,7 @@
 package com.mycompany.plarty;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,15 +11,25 @@ import java.util.List;
 public class TrackModel {
     private String href;
     private List<Item> itemList;
+    private boolean trackSelected = false;
+    private Item item;
     private Integer limit;
     private String next;
     private Integer offset;
     private String previous;
     private Integer total;
+    private Integer rating;
 
-    public String getHref() {
-        return href;
+    public void chooseTrack(int index){
+        item = itemList.get(index);
+        itemList.clear();
+        trackSelected = true;
     }
+    public int getRating(){ return rating; }
+    public void upVote(){ rating += 1; }
+    public void downVote(){ rating -= 1; }
+    public Item getItem() { return item; }
+    public String getHref() { return href; }
     public void setHref(String href) { this.href = href; }
     public List<Item> getItemList() {
         return itemList;
@@ -119,6 +131,7 @@ public class TrackModel {
             private String name;
             private String type;
             private String uri;
+            private Bitmap bitmap;
 
             public String getHref() { return href; }
             public void setHref(String href) { this.href = href; }
@@ -132,6 +145,8 @@ public class TrackModel {
             public void setType(String type) { this.type = type; }
             public String getUri() { return uri; }
             public void setUri(String uri) { this.uri = uri; }
+            public Bitmap getBitmap(){ return bitmap; }
+            public void setBitmap(Bitmap bitmap){ this.bitmap = bitmap; }
 
             public class Image {
                 private Integer height;
