@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,6 +30,13 @@ public class Search extends Activity {
         adapter = new SongAdapter(this, arrayOfSongs);
         ListView listView = (ListView) findViewById(R.id.lvSearch);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                MainActivity.mPlayer.play(resultList.getItemList().get(position).getUri());
+                // TODO - Make it queue the song up
+            }
+        });
     }
 
     public void onSearch(View view){
@@ -45,8 +53,7 @@ public class Search extends Activity {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-//        MainActivity.mPlayer.play(resultList.getItemList().get(0).getUri());
-
+        adapter.clear();
         for (int i = 0; i < resultList.getLimit(); i += 1){
             TrackModel.Item newSong = resultList.getItemList().get(i);
             adapter.add(newSong);
