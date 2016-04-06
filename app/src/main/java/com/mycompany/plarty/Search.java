@@ -33,7 +33,9 @@ public class Search extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MainActivity.mPlayer.play(resultList.getItemList().get(position).getUri());
+//                TrackModel.Item tmp = resultList.getItemList().get(position);
+                Song song = new Song(resultList.getItemList().get(position));
+                MainActivity.mPlayer.play(song.getURL());
                 // TODO - Make it queue the song up
             }
         });
