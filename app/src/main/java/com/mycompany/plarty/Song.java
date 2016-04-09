@@ -5,11 +5,11 @@ import android.graphics.Bitmap;
 import java.util.concurrent.ExecutionException;
 
 public class Song {
-    String songName;
-    String songURL;
-    String artist;
-    String albumName;
-    Bitmap albumArt;
+    private String songName;
+    private String songURL;
+    private String artist;
+    private String albumName;
+    private Bitmap albumArt;
 
 
     public Song(){
@@ -26,7 +26,7 @@ public class Song {
         this.artist = track.getArtists().get(0).getName();
         this.albumName = track.getAlbum().getName();
         BitmapDownloadTask bit = new BitmapDownloadTask();
-        bit.execute(track.getAlbum().getImageList().get(2).getUrl());
+        bit.execute(track.getAlbum().getImageList().get(1).getUrl());
         try {
             this.albumArt = bit.get();
         } catch (InterruptedException e) {

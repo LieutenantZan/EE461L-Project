@@ -26,7 +26,7 @@ public class Search extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
 
-        ArrayList<TrackModel.Item> arrayOfSongs = new ArrayList<TrackModel.Item>();
+        ArrayList<Song> arrayOfSongs = new ArrayList<Song>();
         adapter = new SongAdapter(this, arrayOfSongs);
         ListView listView = (ListView) findViewById(R.id.lvSearch);
         listView.setAdapter(adapter);
@@ -57,7 +57,7 @@ public class Search extends Activity {
         }
         adapter.clear();
         for (int i = 0; i < resultList.getLimit(); i += 1){
-            TrackModel.Item newSong = resultList.getItemList().get(i);
+            Song newSong = new Song(resultList.getItemList().get(i));
             adapter.add(newSong);
         }
     }

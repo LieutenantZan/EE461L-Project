@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-public class SongAdapter extends ArrayAdapter<TrackModel.Item> {
+public class SongAdapter extends ArrayAdapter<Song> {
 
     private static class ViewHolder {
         TextView song;
@@ -21,14 +21,14 @@ public class SongAdapter extends ArrayAdapter<TrackModel.Item> {
         ImageView albumArt;
     }
 
-    public SongAdapter(Context context, ArrayList<TrackModel.Item> songs) {
+    public SongAdapter(Context context, ArrayList<Song> songs) {
         super(context, 0, songs);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        TrackModel.Item song = getItem(position);
+        Song song = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder;
         if (convertView == null) {
@@ -48,18 +48,10 @@ public class SongAdapter extends ArrayAdapter<TrackModel.Item> {
 //        TextView album = (TextView) convertView.findViewById(R.id.albumName);
 //        ImageView albumArt = (ImageView) convertView.findViewById(R.id.albumArt);
         // Populate the data into the template view using the data object
-        viewHolder.song.setText(song.getName());
-        viewHolder.artist.setText(song.getArtists().get(0).getName());
-        viewHolder.album.setText(song.getAlbum().getName());
-        BitmapDownloadTask bit = new BitmapDownloadTask();
-        bit.execute(song.getAlbum().getImageList().get(1).getUrl());    // Gets the 300x300px image
-        try {
-            viewHolder.albumArt.setImageBitmap(bit.get());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+        viewHolder.song.setText(song.getSong());
+        viewHolder.artist.setText(song.getArtist());
+        viewHolder.album.setText(song.getAlbum());
+        viewHolder.albumArt.setImageBitmap(song.getAlbumArt());
 
         // Return the completed view to render on screen
         return convertView;
