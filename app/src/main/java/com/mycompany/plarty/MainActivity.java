@@ -1,7 +1,11 @@
 package com.mycompany.plarty;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,11 +36,16 @@ public class MainActivity extends Activity implements
     public static String spotifyTrackID; //Keeps track of the saved song
     public static String txt;
     public static Player mPlayer;
+    WifiP2pManager mManager;
+    WifiP2pManager.Channel mChannel;
+    BroadcastReceiver mReceiver;
+    IntentFilter mIntentFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.mycompany.plarty.R.layout.activity_main);
+        startP2P();
     }
 
     @Override
@@ -117,10 +126,16 @@ public class MainActivity extends Activity implements
         super.onDestroy();
     }
 
+    public void onSearch(View view) {
+        Intent searchIntent = new Intent(this, Search.class);
+        startActivity(searchIntent);
+    }
+
     public void onCreateRoom(View view) {
         //TODO - Start broadcasting to devices
             //Check out http://developer.android.com/training/connect-devices-wirelessly/index.html
-            //Maybe move it up to after the intent is returned and the room is actuially created so the name can be the party name
+            //http://developer.android.com/guide/topics/connectivity/wifip2p.html
+            //Maybe move it up to after the intent is returned and the room is actually created so the name can be the party name
             //Maybe make it name:code
         AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
                 AuthenticationResponse.Type.TOKEN,
@@ -150,11 +165,30 @@ public class MainActivity extends Activity implements
 
     public void onJoinRoom(View view) {
         //TODO - Search for devices and join
-
+//        connection.detectPeers(this.getParent());
     }
 
-    public void onSearch(View view) {
-        Intent searchIntent = new Intent(this, Search.class);
-        startActivity(searchIntent);
+    private void startP2P(){
+        mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
+        mChannel = mManager.initialize(this, getMainLooper(), null);
+        mReceiver = new WiFiDirectBroadcastReceiver(mManager, mChannel, this);
+
+        mIntentFilter = new IntentFilter();
+        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
+        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
+        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
+        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        connection.resumeRegister(this.getParent());
+    }
+    /* unregister the broadcast receiver */
+    @Override
+    protected void onPause() {
+        super.onPause();
+//        connection.pauseUnregister(this.getParent());
     }
 }
