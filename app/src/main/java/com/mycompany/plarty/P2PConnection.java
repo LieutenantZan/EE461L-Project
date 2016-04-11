@@ -9,11 +9,13 @@ import android.net.Uri;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pManager;
+import android.util.Log;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
@@ -24,11 +26,11 @@ public class P2PConnection {
     BroadcastReceiver mReceiver;
     IntentFilter mIntentFilter;
 
-    public P2PConnection(Context context){
+    public P2PConnection(Activity activity){
 
-        mManager = (WifiP2pManager) context.getSystemService(Context.WIFI_P2P_SERVICE);
-        mChannel = mManager.initialize(context, context.getMainLooper(), null);
-        mReceiver = new WiFiDirectBroadcastReceiver(mManager, mChannel, context);
+        mManager = (WifiP2pManager) activity.getSystemService(Context.WIFI_P2P_SERVICE);
+        mChannel = mManager.initialize(activity, activity.getMainLooper(), null);
+        mReceiver = new WiFiDirectBroadcastReceiver(mManager, mChannel, activity);
 
         mIntentFilter = new IntentFilter();
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
@@ -49,12 +51,12 @@ public class P2PConnection {
         mManager.discoverPeers(mChannel, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
-
+                Log.d("P2P", "Discovered Peers");
             }
 
             @Override
             public void onFailure(int reason) {
-
+                Log.d("P2P", "Can't detect peers");
             }
         });
     }
@@ -129,6 +131,26 @@ public class P2PConnection {
                     }
                 }
             }
+        }
+    }
+
+    public void renameDevice(String name) {
+        try {
+            Method m = mManager.getClass().getMethod("setDeviceName", mChannel.getClass(), String.class, WifiP2pManager.ActionListener.class);
+
+            m.invoke(mManager, mChannel, name, new WifiP2pManager.ActionListener(){
+                @Override
+                public void onSuccess(){
+
+                }
+
+                @Override
+                public void onFailure(int reason){
+
+                }
+            });
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 }

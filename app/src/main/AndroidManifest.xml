@@ -41,5 +41,10 @@
             android:label="Search"
             android:theme="@style/AppTheme"/>
 
+        <activity
+            android:name=".PeerSearch"
+            android:label="Peers"
+            android:theme="@style/AppTheme"/>
+
     </application>
 </manifest>

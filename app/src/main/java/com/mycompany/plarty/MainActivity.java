@@ -36,16 +36,13 @@ public class MainActivity extends Activity implements
     public static String spotifyTrackID; //Keeps track of the saved song
     public static String txt;
     public static Player mPlayer;
-    WifiP2pManager mManager;
-    WifiP2pManager.Channel mChannel;
-    BroadcastReceiver mReceiver;
-    IntentFilter mIntentFilter;
+    public static P2PConnection test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.mycompany.plarty.R.layout.activity_main);
-        startP2P();
+        test = new P2PConnection(this);
     }
 
     @Override
@@ -74,6 +71,7 @@ public class MainActivity extends Activity implements
 
         if (requestCode == HOST_ROOM_REQUEST_CODE){
             if (resultCode == RESULT_OK){
+                test.renameDevice(intent.getStringExtra("RoomName"));
                 setContentView(R.layout.room_view);
                 TextView roomNameMessage = (TextView) findViewById(R.id.roomNameDisplay);
                 String roomName = intent.getStringExtra("RoomName");
@@ -165,30 +163,20 @@ public class MainActivity extends Activity implements
 
     public void onJoinRoom(View view) {
         //TODO - Search for devices and join
-//        connection.detectPeers(this.getParent());
-    }
-
-    private void startP2P(){
-        mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
-        mChannel = mManager.initialize(this, getMainLooper(), null);
-        mReceiver = new WiFiDirectBroadcastReceiver(mManager, mChannel, this);
-
-        mIntentFilter = new IntentFilter();
-        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
-        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
-        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
-        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+        test.detectPeers(this);
+        Intent peerSearchIntent = new Intent(this, PeerSearch.class);
+        startActivity(peerSearchIntent);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-//        connection.resumeRegister(this.getParent());
+        test.resumeRegister(this);
     }
     /* unregister the broadcast receiver */
     @Override
     protected void onPause() {
         super.onPause();
-//        connection.pauseUnregister(this.getParent());
+        test.pauseUnregister(this);
     }
 }

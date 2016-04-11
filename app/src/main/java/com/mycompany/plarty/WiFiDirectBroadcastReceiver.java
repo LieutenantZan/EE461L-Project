@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
+import android.util.Log;
 
 
 public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
@@ -27,7 +28,9 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
         WifiP2pManager.PeerListListener myPeerListListener = new WifiP2pManager.PeerListListener() {
             @Override
             public void onPeersAvailable(WifiP2pDeviceList peers) {
+                Log.d("WiFiDirectBroadcastRec", "Peer found");
                 // TODO - setPeerList(peers) in activity?
+                PeerSearch.setPeerList(peers);
             }
         };
 
@@ -35,8 +38,10 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
             // Check to see if Wi-Fi is enabled and notify appropriate activity
             int state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1);
             if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
+                Log.d("WiFiDirectBroadcastRec", "Wifi P2P is enabled");
                 // Wifi P2P is enabled
             } else {
+                Log.d("WiFiDirectBroadcastRec", "Wifi P2P is not enabled");
                 // Wi-Fi P2P is not enabled
             }
         } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
