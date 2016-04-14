@@ -134,19 +134,18 @@ public class P2PConnection {
         }
     }
 
-    public void renameDevice(String name) {
+    public void renameDevice(String name){
         try {
             Method m = mManager.getClass().getMethod("setDeviceName", mChannel.getClass(), String.class, WifiP2pManager.ActionListener.class);
-
             m.invoke(mManager, mChannel, name, new WifiP2pManager.ActionListener(){
                 @Override
                 public void onSuccess(){
-
+                    Log.d("P2P", "Device Renamed!");
                 }
 
                 @Override
                 public void onFailure(int reason){
-
+                    Log.d("P2P", "Device rename failed");
                 }
             });
         } catch (Exception e){
