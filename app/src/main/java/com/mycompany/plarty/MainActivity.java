@@ -2,6 +2,7 @@ package com.mycompany.plarty;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,10 +33,12 @@ public class MainActivity extends Activity implements
     public static String spotifyTrackID; //Keeps track of the saved song
     public static String txt;
     public static Player mPlayer;
+//    public static String logoPath="app/src/main/res/layout/img/logo.png";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Drawable logo = Drawable.createFromPath(logoPath);
         setContentView(com.mycompany.plarty.R.layout.activity_main);
     }
 
