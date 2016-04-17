@@ -71,7 +71,7 @@ public class MainActivity extends Activity implements
 
         if (requestCode == HOST_ROOM_REQUEST_CODE){
             if (resultCode == RESULT_OK){
-                test.renameDevice(intent.getStringExtra("RoomName"));
+                test.startRegistration();
                 setContentView(R.layout.room_view);
                 TextView roomNameMessage = (TextView) findViewById(R.id.roomNameDisplay);
                 String roomName = intent.getStringExtra("RoomName");
@@ -140,8 +140,9 @@ public class MainActivity extends Activity implements
                 REDIRECT_URI);
         builder.setScopes(new String[]{"user-read-private", "streaming"});
         AuthenticationRequest request = builder.build();
-
         AuthenticationClient.openLoginActivity(this, SPOTIFY_LOGIN_REQUEST_CODE, request);
+
+        test.startRegistration();
 
         Intent createRoomIntent = new Intent(this, CreateRoom.class);
         final int result = 100;
@@ -163,9 +164,10 @@ public class MainActivity extends Activity implements
 
     public void onJoinRoom(View view) {
         //TODO - Search for devices and join
-        test.detectPeers(this);
-        Intent peerSearchIntent = new Intent(this, PeerSearch.class);
-        startActivity(peerSearchIntent);
+//        test.detectPeers(this);
+        test.discoverService();
+//        Intent peerSearchIntent = new Intent(this, PeerSearch.class);
+//        startActivity(peerSearchIntent);
     }
 
     @Override
