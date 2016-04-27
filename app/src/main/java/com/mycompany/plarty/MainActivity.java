@@ -9,11 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
 import com.spotify.sdk.android.player.Config;
+import com.spotify.sdk.android.player.PlayerStateCallback;
 import com.spotify.sdk.android.player.Spotify;
 import com.spotify.sdk.android.player.ConnectionStateCallback;
 import com.spotify.sdk.android.player.Player;
@@ -22,8 +24,11 @@ import com.spotify.sdk.android.player.PlayerState;
 
 import org.w3c.dom.Text;
 
+import java.util.Observable;
+import java.util.Observer;
+
 public class MainActivity extends Activity implements
-        PlayerNotificationCallback, ConnectionStateCallback {
+        PlayerNotificationCallback, ConnectionStateCallback, Observer {
 
     private static final String CLIENT_ID = "9409b36d6d4143188ac37ffc294ed91a";
     private static final String REDIRECT_URI = "plarty-login://callback";
@@ -33,6 +38,7 @@ public class MainActivity extends Activity implements
     public static String spotifyTrackID; //Keeps track of the saved song
     public static String txt;
     public static Player mPlayer;
+    public static Playlist playlist;
 //    public static String logoPath="app/src/main/res/layout/img/logo.png";
 
     @Override
@@ -40,6 +46,8 @@ public class MainActivity extends Activity implements
         super.onCreate(savedInstanceState);
         //Drawable logo = Drawable.createFromPath(logoPath);
         setContentView(com.mycompany.plarty.R.layout.activity_main);
+        playlist = new Playlist();
+        playlist.addObserver(this);
     }
 
     @Override
@@ -55,7 +63,19 @@ public class MainActivity extends Activity implements
                     public void onInitialized(Player player) {
                         mPlayer = player;
                         mPlayer.addConnectionStateCallback(MainActivity.this);
-                        mPlayer.addPlayerNotificationCallback(MainActivity.this);
+                        mPlayer.addPlayerNotificationCallback(new PlayerNotificationCallback() {
+                            @Override
+                            public void onPlaybackEvent(EventType eventType, PlayerState playerState) {
+                                if (eventType == EventType.END_OF_CONTEXT){
+                                    playNext(playlist.getNext());
+                                }
+                            }
+
+                            @Override
+                            public void onPlaybackError(ErrorType errorType, String s) {
+
+                            }
+                        });
                     }
 
                     @Override
@@ -159,5 +179,25 @@ public class MainActivity extends Activity implements
     public void onSearch(View view) {
         Intent searchIntent = new Intent(this, Search.class);
         startActivity(searchIntent);
+    }
+
+    private void playNext(Song next){
+        if(next == null){
+            Toast.makeText(MainActivity.this, "Playlist Empty", Toast.LENGTH_SHORT).show();
+        } else {
+            mPlayer.play(next.getURL());
+            //TODO - display on now playing
+        }
+    }
+
+    public void update(Observable o, Object data){
+        mPlayer.getPlayerState(new PlayerStateCallback() {
+            @Override
+            public void onPlayerState(PlayerState playerState) {
+                if (playerState.playing == false){
+                    playNext(playlist.getNext());
+                }
+            }
+        });
     }
 }
