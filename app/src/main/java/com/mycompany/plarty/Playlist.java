@@ -1,10 +1,11 @@
 package com.mycompany.plarty;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Observable;
 
 public class Playlist extends Observable {
-    ArrayList<Song> playlist;
+    private ArrayList<Song> playlist;
     int index;
 
     Playlist(){
@@ -29,4 +30,7 @@ public class Playlist extends Observable {
         clearChanged();
     }
 
+    public Iterator<Song> getSongs(){
+        return playlist.iterator();
+    }
 }

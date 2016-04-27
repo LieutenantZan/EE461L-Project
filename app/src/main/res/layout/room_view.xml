@@ -71,4 +71,11 @@
         android:onClick="onSearch"
         android:layout_gravity="center_horizontal" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Playlist"
+        android:onClick="onViewPlaylist"
+        android:layout_gravity="center_horizontal" />
+
 </LinearLayout>

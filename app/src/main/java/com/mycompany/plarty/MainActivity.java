@@ -200,4 +200,9 @@ public class MainActivity extends Activity implements
             }
         });
     }
+
+    public void onViewPlaylist(View view){
+        Intent playlistIntent = new Intent(this, PlaylistView.class);
+        startActivity(playlistIntent);
+    }
 }
