@@ -138,6 +138,7 @@ public class MainActivity extends Activity implements
     @Override
     protected void onDestroy() {
         Spotify.destroyPlayer(this);
+        playlist.clearPlaylist();
         super.onDestroy();
     }
 
@@ -162,15 +163,16 @@ public class MainActivity extends Activity implements
     public void onLeaveRoom(View view) {
         setContentView(com.mycompany.plarty.R.layout.activity_main);
         //TODO - Close room and all that jazz goes here too
+        onDestroy();
     }
 
-    public void onPlaySong(View view){
-        EditText et = (EditText) findViewById(com.mycompany.plarty.R.id.editText);
-        txt = et.getText().toString();
-        txt = txt.replaceAll(" ", "%20");
-        String url_select = API_URL + txt + "&type=track";
-        new JSONTask().execute(url_select);
-    }
+//    public void onPlaySong(View view){
+//        EditText et = (EditText) findViewById(com.mycompany.plarty.R.id.editText);
+//        txt = et.getText().toString();
+//        txt = txt.replaceAll(" ", "%20");
+//        String url_select = API_URL + txt + "&type=track";
+//        new JSONTask().execute(url_select);
+//    }
 
     public void onJoinRoom(View view) {
         //TODO - Search for devices and join
@@ -187,7 +189,6 @@ public class MainActivity extends Activity implements
             Toast.makeText(MainActivity.this, "Playlist Empty", Toast.LENGTH_SHORT).show();
         } else {
             mPlayer.play(next.getURL());
-            //TODO - display on now playing
             updateNowPlaying(next);
         }
     }

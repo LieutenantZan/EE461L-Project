@@ -33,4 +33,8 @@ public class Playlist extends Observable {
     public Iterator<Song> getSongs(){
         return playlist.iterator();
     }
+
+    public void clearPlaylist(){
+        playlist.removeAll(playlist);
+    }
 }

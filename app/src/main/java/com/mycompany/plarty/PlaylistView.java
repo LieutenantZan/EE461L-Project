@@ -35,7 +35,6 @@ public class PlaylistView extends Activity {
 ////                TrackModel.Item tmp = resultList.getItemList().get(position);
 //                Song song = new Song(resultList.getItemList().get(position));
 //                //MainActivity.mPlayer.play(song.getURL());
-//                // TODO - Make it queue the song up
 //                MainActivity.playlist.queueSong(song);
 //            }
 //        });
