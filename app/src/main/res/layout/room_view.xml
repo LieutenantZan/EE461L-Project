@@ -11,51 +11,79 @@
     android:orientation="vertical"
     tools:context="com.mycompany.plarty.MainActivity">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Room Name:"
-        android:textSize="24sp"/>
-
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:id="@+id/roomNameDisplay" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Room Name:"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:id="@+id/roomNameDisplay" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Room Code:"
-        android:textSize="24sp"/>
+        android:textSize="18sp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
+        android:textSize="18sp"
         android:id="@+id/roomCodeDisplay" />
+    </LinearLayout>
 
-    <EditText
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200px"
-        android:gravity="center_horizontal"
-        android:id="@+id/editText"
-        android:width="100dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:padding="10dp"
+        android:orientation="vertical">
 
-    <Button
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/albumArtNow"
+            android:minWidth="100dp"
+            android:minHeight="100dp"
+            android:maxHeight="500dp"
+            android:maxWidth="500dp"
+            android:scaleType="fitCenter"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/songNameNow"
+            android:textSize="24sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/artistNameNow"
+            android:textSize="24sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/albumNameNow"
+            android:textSize="24sp"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Play"
-        android:id="@+id/play_button"
-        android:onClick="onPlaySong"
-        android:layout_gravity="center_horizontal"
-        android:layout_below="@+id/editText"
-        android:layout_centerHorizontal="true" />
-
+        android:orientation="horizontal">
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -77,5 +105,7 @@
         android:text="View Playlist"
         android:onClick="onViewPlaylist"
         android:layout_gravity="center_horizontal" />
+
+        </LinearLayout>
 
 </LinearLayout>

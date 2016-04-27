@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -187,6 +188,7 @@ public class MainActivity extends Activity implements
         } else {
             mPlayer.play(next.getURL());
             //TODO - display on now playing
+            updateNowPlaying(next);
         }
     }
 
@@ -204,5 +206,17 @@ public class MainActivity extends Activity implements
     public void onViewPlaylist(View view){
         Intent playlistIntent = new Intent(this, PlaylistView.class);
         startActivity(playlistIntent);
+    }
+
+    private void updateNowPlaying(Song nowPlaying){
+        ImageView albumArt = (ImageView) findViewById(R.id.albumArtNow);
+        TextView song = (TextView) findViewById(R.id.songNameNow);
+        TextView artist = (TextView) findViewById(R.id.artistNameNow);
+        TextView album = (TextView) findViewById(R.id.albumNameNow);
+
+        albumArt.setImageBitmap(nowPlaying.getAlbumArt());
+        song.setText(nowPlaying.getSong());
+        artist.setText(nowPlaying.getArtist());
+        album.setText(nowPlaying.getAlbum());
     }
 }
