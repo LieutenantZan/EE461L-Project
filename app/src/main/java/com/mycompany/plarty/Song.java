@@ -2,6 +2,9 @@ package com.mycompany.plarty;
 
 import android.graphics.Bitmap;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.concurrent.ExecutionException;
 
 public class Song {
@@ -9,6 +12,7 @@ public class Song {
     private String songURL;
     private String artist;
     private String albumName;
+    private String albumArtURL;
     private Bitmap albumArt;
 
 
@@ -18,6 +22,7 @@ public class Song {
         this.artist = null;
         this.albumName = null;
         this.albumArt = null;
+        this.albumArtURL = null;
     }
 
     public Song(TrackModel.Item track){
@@ -25,14 +30,38 @@ public class Song {
         this.songURL = track.getUri();
         this.artist = track.getArtists().get(0).getName();
         this.albumName = track.getAlbum().getName();
+        this.albumArtURL = track.getAlbum().getImageList().get(1).getUrl();
         BitmapDownloadTask bit = new BitmapDownloadTask();
-        bit.execute(track.getAlbum().getImageList().get(1).getUrl());
+        bit.execute(albumArtURL);
         try {
             this.albumArt = bit.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
+        }
+    }
+
+    public Song(String input) throws JSONException{
+        JSONObject json = new JSONObject(input);
+        try {
+            this.songName = json.getString("songName");
+            this.songURL = json.getString("songURL");
+            this.artist = json.getString("artist");
+            this.albumName = json.getString("albumName");
+            this.albumArtURL = json.getString("albumArtURL");
+            BitmapDownloadTask bit = new BitmapDownloadTask();
+            bit.execute(albumArtURL);
+            try {
+                this.albumArt = bit.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+        catch (JSONException e){
+
         }
     }
 
@@ -50,6 +79,10 @@ public class Song {
 
     public Bitmap getAlbumArt(){
         return this.albumArt;
+    }
+
+    public String getAlbumArtURL(){
+        return this.albumArtURL;
     }
 
     public String getURL(){
