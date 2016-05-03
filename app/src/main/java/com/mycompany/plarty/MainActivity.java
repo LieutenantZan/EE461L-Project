@@ -162,7 +162,7 @@ public class MainActivity extends Activity implements
         try {
             client = new Client();
         } catch(Exception e){ }
-        host = false;
+        host = true;
 
         Intent createRoomIntent = new Intent(this, CreateRoom.class);
         final int result = 100;
