@@ -22,10 +22,9 @@ public class BitmapDownloadTask extends AsyncTask<String, String, Bitmap> {
             Bitmap myBitmap = BitmapFactory.decodeStream(input);
             return myBitmap;
         } catch (IOException e) {
-            // Log exception
+            e.printStackTrace();
             return null;
         }
-//        return null;
     }
 
     protected void onPostExecute(Bitmap result) {

@@ -29,23 +29,5 @@ public class PlaylistView extends Activity {
             Song newSong = (Song) songs.next();
             adapter.add(newSong);
         }
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-////                TrackModel.Item tmp = resultList.getItemList().get(position);
-//                Song song = new Song(resultList.getItemList().get(position));
-//                //MainActivity.mPlayer.play(song.getURL());
-//                MainActivity.playlist.queueSong(song);
-//            }
-//        });
-    }
-
-    public void onSearch(View view){
-        adapter.clear();
-        Iterator songs = MainActivity.playlist.getSongs();
-        while(songs.hasNext()){
-            Song newSong = (Song) songs.next();
-            adapter.add(newSong);
-        }
     }
 }

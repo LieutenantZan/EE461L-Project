@@ -43,10 +43,6 @@ public class SongAdapter extends ArrayAdapter<Song> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         // Lookup view for data population
-//        TextView songName = (TextView) convertView.findViewById(R.id.songName);
-//        TextView artist = (TextView) convertView.findViewById(R.id.artistName);
-//        TextView album = (TextView) convertView.findViewById(R.id.albumName);
-//        ImageView albumArt = (ImageView) convertView.findViewById(R.id.albumArt);
         // Populate the data into the template view using the data object
         viewHolder.song.setText(song.getSong());
         viewHolder.artist.setText(song.getArtist());

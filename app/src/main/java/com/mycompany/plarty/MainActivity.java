@@ -35,11 +35,8 @@ public class MainActivity extends Activity implements
 
     private static final String CLIENT_ID = "9409b36d6d4143188ac37ffc294ed91a";
     private static final String REDIRECT_URI = "plarty-login://callback";
-    public static final String API_URL = "https://api.spotify.com/v1/search?q=";
     private static final int SPOTIFY_LOGIN_REQUEST_CODE = 1337;
     private static final int HOST_ROOM_REQUEST_CODE = 200;
-    public static String spotifyTrackID; //Keeps track of the saved song
-    public static String txt;
     public static Player mPlayer;
     public static Playlist playlist;
     public static Client client;
@@ -145,10 +142,6 @@ public class MainActivity extends Activity implements
     }
 
     public void onCreateRoom(View view) {
-        //TODO - Start broadcasting to devices
-            //Check out http://developer.android.com/training/connect-devices-wirelessly/index.html
-            //Maybe move it up to after the intent is returned and the room is actuially created so the name can be the party name
-            //Maybe make it name:code
         AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
                 AuthenticationResponse.Type.TOKEN,
                 REDIRECT_URI);
@@ -163,8 +156,6 @@ public class MainActivity extends Activity implements
             client.inputFromServer();
         } catch(Exception e){ }
 
-
-
         Intent createRoomIntent = new Intent(this, CreateRoom.class);
         final int result = 100;
         startActivityForResult(createRoomIntent, HOST_ROOM_REQUEST_CODE);
@@ -172,32 +163,12 @@ public class MainActivity extends Activity implements
 
     public void onLeaveRoom(View view) {
         setContentView(com.mycompany.plarty.R.layout.activity_main);
-        //TODO - Close room and all that jazz goes here too
-        if(host) {
+        if (host) {
             Spotify.destroyPlayer(this);
             playlist.clearPlaylist();
         }
         Client.end();
     }
-
-//    public void onPlaySong(View view){
-//        EditText et = (EditText) findViewById(com.mycompany.plarty.R.id.editText);
-//        txt = et.getText().toString();
-//        txt = txt.replaceAll(" ", "%20");
-//        String url_select = API_URL + txt + "&type=track";
-//        new JSONTask().execute(url_select);
-//    }
-//    public void queueSong(Song song){
-//        if(host){
-//            playlist.queueSong(song);
-//        } else{
-//            try {
-//                client.outputToServer(song);
-//            } catch(Exception e){
-//                e.printStackTrace();
-//            }
-//        }
-//    }
 
     public void onJoinRoom(View view) {
         //TODO - Search for devices and join
