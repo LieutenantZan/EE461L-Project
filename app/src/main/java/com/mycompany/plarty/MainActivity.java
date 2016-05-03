@@ -182,17 +182,17 @@ public class MainActivity extends Activity implements
 //        String url_select = API_URL + txt + "&type=track";
 //        new JSONTask().execute(url_select);
 //    }
-    public void queueSong(Song song){
-        if(host){
-            playlist.queueSong(song);
-        } else{
-            try {
-                client.outputToServer(song);
-            } catch(Exception e){
-                e.printStackTrace();
-            }
-        }
-    }
+//    public void queueSong(Song song){
+//        if(host){
+//            playlist.queueSong(song);
+//        } else{
+//            try {
+//                client.outputToServer(song);
+//            } catch(Exception e){
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
     public void onJoinRoom(View view) {
         //TODO - Search for devices and join
@@ -200,6 +200,7 @@ public class MainActivity extends Activity implements
             client = new Client();
         } catch(Exception e){ }
         host = false;
+        setContentView(R.layout.room_view);
     }
 
     public void onSearch(View view) {

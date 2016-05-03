@@ -100,6 +100,7 @@ class Output implements Runnable{
 
         try{
             out.writeUTF(json.toString());
+            out.flush();
             System.out.println("Sent! " + json.toString());
         } catch (IOException e) {}
     }
