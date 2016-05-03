@@ -25,6 +25,8 @@ import com.spotify.sdk.android.player.PlayerState;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
+import java.net.Socket;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -40,6 +42,8 @@ public class MainActivity extends Activity implements
     public static String txt;
     public static Player mPlayer;
     public static Playlist playlist;
+    public static Client client;
+    public static boolean host = false;
 //    public static String logoPath="app/src/main/res/layout/img/logo.png";
 
     @Override
@@ -155,6 +159,11 @@ public class MainActivity extends Activity implements
 
         AuthenticationClient.openLoginActivity(this, SPOTIFY_LOGIN_REQUEST_CODE, request);
 
+        try {
+            client = new Client();
+        } catch(Exception e){ }
+        host = false;
+
         Intent createRoomIntent = new Intent(this, CreateRoom.class);
         final int result = 100;
         startActivityForResult(createRoomIntent, HOST_ROOM_REQUEST_CODE);
@@ -173,10 +182,24 @@ public class MainActivity extends Activity implements
 //        String url_select = API_URL + txt + "&type=track";
 //        new JSONTask().execute(url_select);
 //    }
+    public void queueSong(Song song){
+        if(host){
+            playlist.queueSong(song);
+        } else{
+            try {
+                client.outputToServer(song);
+            } catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
 
     public void onJoinRoom(View view) {
         //TODO - Search for devices and join
-
+        try {
+            client = new Client();
+        } catch(Exception e){ }
+        host = false;
     }
 
     public void onSearch(View view) {

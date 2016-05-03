@@ -42,9 +42,9 @@ public class Song {
         }
     }
 
-    public Song(String input) throws JSONException{
-        JSONObject json = new JSONObject(input);
+    public Song(String input){
         try {
+            JSONObject json = new JSONObject(input);
             this.songName = json.getString("songName");
             this.songURL = json.getString("songURL");
             this.artist = json.getString("artist");
