@@ -25,6 +25,7 @@ public class Client {
     static Socket socket;
     static DataOutputStream out;
     static DataInputStream in;
+    public static boolean stop = false;
 
     public Client() throws Exception{
         ClientAsync temp = new ClientAsync();
@@ -49,6 +50,19 @@ public class Client {
         Thread thread2 = new Thread(input);
         thread2.start();
     }
+
+    public static void end(){
+        stop = true;
+        try{
+            if (MainActivity.host) {
+                new DataOutputStream(socket.getOutputStream()).writeUTF("END");
+            }
+            socket.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }
 
 class Input implements Runnable{
@@ -61,7 +75,7 @@ class Input implements Runnable{
     }
 
     public void run(){
-        while(true) {
+        while(!Client.stop) {
             try {
                 String message = in.readUTF();
                 System.out.println(message);

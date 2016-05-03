@@ -30,6 +30,9 @@ public class Playlist extends Observable {
     public void queueSong(Song song){
         if(MainActivity.host) {
             playlist.add(song);
+            setChanged();
+            notifyObservers();
+            clearChanged();
         } else {
             try {
                 MainActivity.client.outputToServer(song);
@@ -37,9 +40,6 @@ public class Playlist extends Observable {
                 e.printStackTrace();
             }
         }
-        setChanged();
-        notifyObservers();
-        clearChanged();
     }
 
     public Iterator<Song> getSongs(){

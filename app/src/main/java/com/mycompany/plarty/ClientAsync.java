@@ -15,8 +15,13 @@ public class ClientAsync extends AsyncTask<String, Socket, Socket> {
     protected Socket doInBackground(String... type) {
         System.out.println("Connecting...");
         try {
-            Socket socket = new Socket("10.146.57.72", 7777);
-            return socket;
+            if (MainActivity.host) {
+                Socket socket = new Socket("10.146.57.72", 7777);
+                return socket;
+            } else{
+                Socket socket = new Socket("10.146.57.72", 7778);
+                return socket;
+            }
         } catch(Exception e){ }
         System.out.println("Connection successful");
         return null;

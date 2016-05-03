@@ -141,8 +141,6 @@ public class MainActivity extends Activity implements
 
     @Override
     protected void onDestroy() {
-        Spotify.destroyPlayer(this);
-        playlist.clearPlaylist();
         super.onDestroy();
     }
 
@@ -159,10 +157,13 @@ public class MainActivity extends Activity implements
 
         AuthenticationClient.openLoginActivity(this, SPOTIFY_LOGIN_REQUEST_CODE, request);
 
+        host = true;
         try {
             client = new Client();
+            client.inputFromServer();
         } catch(Exception e){ }
-        host = true;
+
+
 
         Intent createRoomIntent = new Intent(this, CreateRoom.class);
         final int result = 100;
@@ -172,7 +173,11 @@ public class MainActivity extends Activity implements
     public void onLeaveRoom(View view) {
         setContentView(com.mycompany.plarty.R.layout.activity_main);
         //TODO - Close room and all that jazz goes here too
-        onDestroy();
+        if(host) {
+            Spotify.destroyPlayer(this);
+            playlist.clearPlaylist();
+        }
+        Client.end();
     }
 
 //    public void onPlaySong(View view){
@@ -196,10 +201,10 @@ public class MainActivity extends Activity implements
 
     public void onJoinRoom(View view) {
         //TODO - Search for devices and join
+        host = false;
         try {
             client = new Client();
         } catch(Exception e){ }
-        host = false;
         setContentView(R.layout.room_view);
     }
 
